@@ -28,7 +28,7 @@ public class RelatorioService {
 			System.out.println("\nSelecione uma opção:\n");
 			System.out.println("0 - Sair");
 			System.out.println("1 - Consulta funcionário por nome");
-			System.out.println("2 - Consulta funcionário por nome, salário e data de contratação");
+			System.out.println("2 - Consulta funcionário por nome, salário maior e data de contratação");
 			
 			switch (scanner.next()) {
 				case "0":

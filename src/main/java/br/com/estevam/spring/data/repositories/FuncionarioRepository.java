@@ -12,7 +12,7 @@ public interface FuncionarioRepository extends CrudRepository<Funcionario, Integ
 
 	Iterable<Funcionario> findByNome(String nome);
 	
-	@Query("SELECT f FROM Funcionario f WHERE f.nome = :nome AND f.salario >= :salario AND f.dataContratacao = dataContratacao")
+	@Query("SELECT f FROM Funcionario f WHERE f.nome = :nome AND f.salario >= :salario AND f.dataContratacao = :dataContratacao")
 	Iterable<Funcionario> findByNomeAndSalarioMaiorAndDataContratacao(String nome,BigDecimal salario, LocalDate dataContratacao);
 
 }
