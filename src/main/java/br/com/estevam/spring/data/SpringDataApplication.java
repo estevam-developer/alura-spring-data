@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import br.com.estevam.spring.data.service.CrudCargoService;
 import br.com.estevam.spring.data.service.CrudFuncionarioService;
 import br.com.estevam.spring.data.service.CrudUnidadeTrabalhoService;
+import br.com.estevam.spring.data.service.RelatorioService;
 
 @SpringBootApplication
 public class SpringDataApplication implements CommandLineRunner {
@@ -16,12 +17,16 @@ public class SpringDataApplication implements CommandLineRunner {
 	private final CrudCargoService cargoService;
 	private final CrudUnidadeTrabalhoService unidadeTrabalhoService;
 	private final CrudFuncionarioService funcionarioService;
+	private final RelatorioService relatorioService;
 	
-	public SpringDataApplication(CrudCargoService cargoService, CrudUnidadeTrabalhoService unidadeTrabalhoService,
-			CrudFuncionarioService funcionarioService) {
+	public SpringDataApplication(CrudCargoService cargoService, 
+			CrudUnidadeTrabalhoService unidadeTrabalhoService,
+			CrudFuncionarioService funcionarioService,
+			RelatorioService relatorioService) {
 		this.cargoService = cargoService;
 		this.unidadeTrabalhoService = unidadeTrabalhoService;
 		this.funcionarioService = funcionarioService;
+		this.relatorioService = relatorioService;
 	}
 
 	public static void main(String[] args) {
@@ -42,7 +47,8 @@ public class SpringDataApplication implements CommandLineRunner {
 			System.out.println("1 - Cargo");
 			System.out.println("2 - Unidade de Trabalho");
 			System.out.println("3 - Funcionário");
-			
+			System.out.println("4 - Relatórios");
+						
 			switch (scanner.next()) {
 				case "0":
 					sair = true;
@@ -55,6 +61,9 @@ public class SpringDataApplication implements CommandLineRunner {
 					break;
 				case "3":
 					funcionarioService.inicial(scanner);
+					break;
+				case "4":
+					relatorioService.inicial(scanner);
 					break;
 			}
 			
