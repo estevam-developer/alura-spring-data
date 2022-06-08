@@ -5,8 +5,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import br.com.estevam.spring.data.entities.FuncionarioProjecao;
 import br.com.estevam.spring.data.repositories.FuncionarioRepository;
 
 @Service
@@ -29,6 +31,7 @@ public class RelatorioService {
 			System.out.println("0 - Sair");
 			System.out.println("1 - Consulta funcionário por nome");
 			System.out.println("2 - Consulta funcionário por nome, salário maior e data de contratação");
+			System.out.println("3 - Consulta funcionário salário");
 			
 			switch (scanner.next()) {
 				case "0":
@@ -39,6 +42,9 @@ public class RelatorioService {
 					break;
 				case "2":
 					consultarFuncionarioPorNomeSalarioMaiorDataContratacao(scanner);
+					break;
+				case "3":
+					consultarFuncionarioSalario();
 					break;
 			}
 			
@@ -65,4 +71,11 @@ public class RelatorioService {
 		
 		funcionarioRepository.findByNomeAndSalarioMaiorAndDataContratacao(nome, salario, dataContratacao).forEach(System.out::print);
 	}
+	
+	private void consultarFuncionarioSalario() {
+		Iterable<FuncionarioProjecao> listaFuncionarios = funcionarioRepository.findByFuncionarioSalario(Sort.by("nome"));
+		
+		listaFuncionarios.forEach(f -> System.out.println("Funcionario = Id: " + f.getId() + "|Nome: " + f.getNome() + "|Salário: " + f.getSalario()));
+	}
+
 }
