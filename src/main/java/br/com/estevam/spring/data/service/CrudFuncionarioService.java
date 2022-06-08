@@ -7,6 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.estevam.spring.data.entities.Funcionario;
@@ -128,7 +133,18 @@ public class CrudFuncionarioService {
 	}
 
 	private void listar(Scanner scanner) {
-		funcionarioRepository.findAll().forEach(System.out::println);
+		System.out.print("\nInforme a página que deseja consultar:");
+		Integer page = scanner.nextInt();
+		
+		Pageable pageable = PageRequest.of(page, 3, Sort.by(Direction.ASC, "Nome"));
+		
+		Page<Funcionario> funcionariosPage = funcionarioRepository.findAll(pageable);
+		
+		System.out.println(funcionariosPage);
+		System.out.println("Página atual " + funcionariosPage.getNumber());
+		System.out.println("Total de elementos " + funcionariosPage.getNumberOfElements());
+		
+		funcionariosPage.forEach(System.out::println);
 	}
 
 	private List<UnidadeTrabalho> informarUnidadesTrabalho(Scanner scanner) {

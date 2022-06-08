@@ -5,10 +5,11 @@ import java.time.LocalDate;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import br.com.estevam.spring.data.entities.Funcionario;
 
-public interface FuncionarioRepository extends CrudRepository<Funcionario, Integer> {
+public interface FuncionarioRepository extends PagingAndSortingRepository<Funcionario, Integer> {
 
 	Iterable<Funcionario> findByNome(String nome);
 	
