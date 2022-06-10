@@ -4,13 +4,14 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import br.com.estevam.spring.data.entities.Funcionario;
 import br.com.estevam.spring.data.entities.FuncionarioProjecao;
 
-public interface FuncionarioRepository extends PagingAndSortingRepository<Funcionario, Integer> {
+public interface FuncionarioRepository extends PagingAndSortingRepository<Funcionario, Integer>, JpaSpecificationExecutor<Funcionario> {
 
 	Iterable<Funcionario> findByNome(String nome);
 	

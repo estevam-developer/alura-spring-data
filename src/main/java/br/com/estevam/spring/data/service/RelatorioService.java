@@ -6,10 +6,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import br.com.estevam.spring.data.entities.Funcionario;
 import br.com.estevam.spring.data.entities.FuncionarioProjecao;
 import br.com.estevam.spring.data.repositories.FuncionarioRepository;
+import br.com.estevam.spring.data.specification.SpecificationFuncionario;
 
 @Service
 public class RelatorioService {
@@ -32,6 +35,7 @@ public class RelatorioService {
 			System.out.println("1 - Consulta funcionário por nome");
 			System.out.println("2 - Consulta funcionário por nome, salário maior e data de contratação");
 			System.out.println("3 - Consulta funcionário salário");
+			System.out.println("4 - Consulta funcionário dinâmica");
 			
 			switch (scanner.next()) {
 				case "0":
@@ -45,6 +49,9 @@ public class RelatorioService {
 					break;
 				case "3":
 					consultarFuncionarioSalario();
+					break;
+				case "4":
+					consultarFuncionarioDinamica(scanner);
 					break;
 			}
 			
@@ -78,4 +85,45 @@ public class RelatorioService {
 		listaFuncionarios.forEach(f -> System.out.println("Funcionario = Id: " + f.getId() + "|Nome: " + f.getNome() + "|Salário: " + f.getSalario()));
 	}
 
+	private void consultarFuncionarioDinamica(Scanner scanner) {
+
+		System.out.print("\nInforme o Nome do Funcionário (\"N\" para nenhum): ");
+		String nome = scanner.next();
+		
+		if ("N".equalsIgnoreCase(nome) ) {
+			nome = null;
+		}
+
+		System.out.print("\nInforme o Cpf do Funcionário (\"N\" para nenhum): ");
+		String cpf = scanner.next();
+
+		if ("N".equalsIgnoreCase(cpf) ) {
+			cpf = null;
+		}
+
+		System.out.print("\nInforme o Salário do Funcionário (0 para nenhum): ");
+		BigDecimal salario = new BigDecimal(scanner.next());
+		
+		if (salario.equals(BigDecimal.ZERO)) {
+			salario = null;
+		}
+		
+		System.out.print("\nInforme o Data de Contratação do Funcionário (\"N\" para nenhum): ");
+		String data = scanner.next();
+		LocalDate dataContratacao;
+		
+		if ("N".equalsIgnoreCase(data) ) {
+			dataContratacao = null;
+		} else {
+			dataContratacao = LocalDate.parse(scanner.next(), FORMATTER);
+		}
+		
+		Iterable<Funcionario> funcionarios = funcionarioRepository.findAll(
+				 SpecificationFuncionario.comNomeContendo(nome)
+				.and(SpecificationFuncionario.comCpf(cpf))
+				.and(SpecificationFuncionario.comSalarioMaiorQue(salario))
+				.and(SpecificationFuncionario.comDataContratacaoMaiorQue(dataContratacao)));
+
+		funcionarios.forEach(System.out::println);
+	}
 }
